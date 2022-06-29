@@ -24,13 +24,13 @@ We empirically found out that "Arguments" , "Issues" and "Decision" written in o
 
 
 ## 3. Data used for training summarizer model
-Altohugh the style of writing the headnotes is not the best but it definitely captures important aspects of the judgment .We used the headnotes of supreme court judgments 
+Altohugh the style of writing the headnotes is not the best but it definitely captures important aspects of the judgment. We used the headnotes published along with supreme court judgements from 1950 to 1994. There are 7500 supreme court judgements which have headnotes.  We seperated the headnotes from judgment text. The headnotes are  abstractive summaries of judgement text. So we first found out the original judgment sentences from which headnotes were prepared. We used commonly used [heuristic](https://transformersum.readthedocs.io/en/latest/extractive/convert-to-extractive.html) of ROUGE maximization to convert these abstractive summaries to extractive summaries.  Each of these judgements was also passed through our [Rhetorical Roles Prediction model](https://github.com/Legal-NLP-EkStep/rhetorical-role-baseline#6-training-baseline-model-on-train-data) to get predicted rhetorical roles for each of the senteces. So finally in training data for each of the sentences, we have a flag indicating if this sentence is important to be captured in summary and its rhetorical role.
+The intuition is that to decide if a sentences should be included in the summary, it is important not only to look at the words of the sentence but also the rhetorical role of that sentence. Certain rhetorical roles are more important than others and we hope that model would learn to capture this. 
 
-## 4. AI model Architecture
-We wanted to see how Rhetorical Roles could help generate better summaries. Towards this goal, we passed the sentences
-through bertsumm where sentences were selected to create the summaries. To see the impact of rhetorical roles we
-provided sentences with the predicted rhetorical roles from our model. This helped in generating summaries of various
-roles separately. This approach improved the generated summaries.
+## 4. AI model Architecture (BERTSUM RR)
+We used [BERTSUMM](https://arxiv.org/pdf/1908.08345.pdf) architecture and modified it to include the sentence rhetorical role. We concatenated 768-
+dimensional sentence vector from CLS token to onehot encoded sentence rhetorical roles. The idea is thatif certain rhetorical roles are more important than others while creating summaries, then the model will learnthose. We call this model BERTSUM RR. The trained model is available here.
+
 
 ## 5. Using trained AI model to generate final summary
 
