@@ -6,11 +6,19 @@ The process of creating headnotes is  manual and based on the certain rules and 
 
 ## 2. Structure of Judgment Summary
 While standard way of writing headnotes captures the important aspects of the judgement like HELD, experts believe that it is not the best style of writing summaries. E.g. it is difficult to establish if the facts of a new case are similar to facts of an old case by reading headnotes of the old case.
-So we have come up with revised structure of writing summaries. Summary will have 5 sections Facts summary, Arguments summary, Issue summary, Analysis Summary and Decision Summary. Leveraging our previous work on [structuring court judgements](https://github.com/Legal-NLP-EkStep/rhetorical-role-baseline), we can automatically predict Rhetorical Roles for each sentence and then create this sectionwise summary. 
+
+So we have come up with revised structure of writing summaries. Summary will have 5 sections Facts summary, Arguments summary, Issue summary, Analysis Summary and Decision Summary. Leveraging our previous work on [structuring court judgements](https://github.com/Legal-NLP-EkStep/rhetorical-role-baseline), we can automatically predict Rhetorical Roles for each sentence and then create this sectionwise summary. The following table shows which rhetorical roles to expect in each of the summary sections
+| Summary Section  | Rhetorical Roles |
+| ------------- | ------------- |
+| Facts  | Facts, Ruling by Lower Court  |
+| Issue  | Issues  |
+| Arguments  | Argument by Petitioner, Argument by Respondent  |
+| Analysis  | Analysis,Statute,Precedent Relied,Precedent Not Relied,Ratio of the decision   |
+| Decision  | Ruling by Present Court  |
 
 Extractive Text Summarization is the task of extracting important information or sentence from the given text.
 Extractive summarizers are so-called because they select sentences from the originally given text passage to create the
-summary.
+summary. 
 
 ## 2. Extractive summarization using Rhetorical Roles
 
