@@ -46,8 +46,12 @@ We tested the BERTSUM RR model (trained on 9337 judgements) on the 503 test judg
 | ------------- | ------------- | ------------- |
 |  0.6328 |	0.4152 |	0.6219 | 
 
-## 7. conclusion & Next Steps
+## 7. Creating summaries of custom judgments
+
+## 8. Conclusion & Next Steps
 We have trained an extractive summarizer model for Indian Court judgments. We believe that this model will keep on improving with human in the loop feedback. This model in current form can also give decent summaries as shown by the results but needs caution while application.
 
 ## Acknowledgements
 We thank Aditya Gor from lawbriefs for his valuable feeback about summaries and sharing the data for summaries created by the students which inspired the current summary structure. You can get the raw data by requesting on this [email](adityagor282@gmail.com).
+
+We also thank the volunteers from Manupatra and OpenNyAI for evaluating summaries and sharing valuable feedback.
