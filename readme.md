@@ -33,12 +33,14 @@ dimensional sentence vector from CLS token to onehot encoded sentence rhetorical
 
 
 ## 5. Using trained AI model to generate final summary
-When we pass each of the sentence through RR model then we get predicted probability of each sentence to be in the summary. Since we want section wise summary, we take all the sentences that belong to a section & sort this list in decreasing order of predicted probability. Then want to pick certain sentences on top to create final summary for that section. The percentage of selected sentences depend on the lenght of the input judgment. Longer is the input judgement then lesser percentage of the sentences should be selected other wise summary becomes very long. Conversely, for shorted jugements the selection percentage should be higher to have enough sized summary. 
+When we pass each of the sentence through RR model then we get predicted probability of each sentence to be in the summary. Since we want section wise summary, we take all the sentences that belong to a section & sort this list in decreasing order of predicted probability. Then want to pick certain sentences on top to create final summary for that section. The percentage of selected sentences depend on the lenght of the input judgment. Longer is the input judgement then lesser percentage of the sentences should be selected other wise summary becomes very long. Conversely, for shorted jugements the selection percentage should be higher to have enough sized summary. The following graph shows scatterplot of number of sentences in input text on x axis and percentage of selected senteces in summary on y axis.
 
+![image](https://user-images.githubusercontent.com/4078857/176412454-3fc44d4f-7c12-42fa-8282-99d4e4d46cf2.png)
 
-[Model file](https://storage.googleapis.com/indianlegalbert/OPEN_SOURCED_FILES/Extractive_summarization/model/model_headnotes/model.pt)
+We fitted a piecewise linear regression(orange line) to predict the percentage of summary sentences based on the input sentences count.
 
-## 6. Results
+## 6. Results & conclusion
+
 
 ## 7. Next Steps
 
