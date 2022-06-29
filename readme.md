@@ -1,6 +1,12 @@
-# Extractive Summarization of Legal docs using rhetorical roles
+# Artifical Intelligence augmented Summarization of Indian Court Judgments
 
-## 1. What is Extractive Text Summarization?
+## 1. Why use Artificial Intelligence to help humans create faster summaries of court judgments?
+Court judgments can be very long and it is a common practice for legal publishers to create headnotes of judgments. E.g. [sample headnote](https://main.sci.gov.in/judgment/judis/5268.pdf).
+The process of creating headnotes is  manual and based on the certain rules and patterns. With advances in Artifical Intelligence, we can create automatically summaries of long text and then an expert to correct it to create final summary. This will drastically reduce the time needed for creation of headnotes and make the process more consistent. AI model can also learn from the feedback given by the expert and keep on improving the results.
+
+## 2. Structure of Judgment Summary
+While standard way of writing headnotes captures the important aspects of the judgement like HELD, experts believe that it is not the best style of writing summaries. E.g. it is difficult to establish if the facts of a new case are similar to facts of an old case by reading headnotes of the old case.
+So we have come up with revised structure of writing summaries. Summary will have 5 sections Facts summary, Arguments summary, Issue summary, Analysis Summary and Decision Summary. Leveraging our previous work on [structuring court judgements](https://github.com/Legal-NLP-EkStep/rhetorical-role-baseline), we can automatically predict Rhetorical Roles for each sentence and then create this sectionwise summary. 
 
 Extractive Text Summarization is the task of extracting important information or sentence from the given text.
 Extractive summarizers are so-called because they select sentences from the originally given text passage to create the
@@ -19,12 +25,6 @@ roles separately. This approach improved the generated summaries.
 
 ## 4. Extractive summarization data
 
-We have used data prepared by lawbriefs. You can get the raw data by requesting on this [email](adityagor282@gmail.com).
-
-Most of the data appears have abstractive summaries which are not suitable for extractive summarization task. We also
-noticed that the data prepared has some exact sentences as
-present in judgement. So we have used a mapping logic to create extractive summaries by mapping sentences present in
-abstractive summaries with sentences in judgement.
 
 # Setup
 
