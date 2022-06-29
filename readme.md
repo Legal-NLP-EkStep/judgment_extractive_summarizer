@@ -39,8 +39,12 @@ When we pass each of the sentence through RR model then we get predicted probabi
 
 We fitted a piecewise linear regression(orange line) to predict the percentage of summary sentences based on the input sentences count.
 
-## 6. Results & conclusion
+## 6. Results 
+We tested the BERTSUM RR model (trained on 9337 judgements) on the 503 test judgments. The ROUGE scores are as below.
 
+| ROUGE 1  | ROUGE2 | ROUGE L |
+| ------------- | ------------- | ------------- |
+|  0.6328 |	0.4152 |	0.6219 | 
 
-## 7. Next Steps
-
+## 7. conclusion & Next Steps
+We have trained an extractive summarizer model for Indian Court judgments. We believe that this model will keep on improving with human in the loop feedback. This model in current form can also give decent summaries as shown by the results but needs caution while application.
