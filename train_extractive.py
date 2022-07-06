@@ -4,7 +4,6 @@
 """
 from __future__ import division
 
-import argparse
 import glob
 import os
 import random

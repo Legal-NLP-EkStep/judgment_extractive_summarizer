@@ -23,8 +23,8 @@ There are two styles of creating summaries viz. Extractive & Abstractive. Extrac
 We empirically found out that "Arguments" , "Issues" and "Decision" written in original judgement are very crisp and rich in information. So we do not try to summarize them. We carry forward all the sentences with these 3 roles directly into the summary. "Preamble" is important in setting the context of case and also copied to summary.  For remaining rhetorical roles, we rank the sentences in descending order of importance as predicted by the AI model and choose the top ones as described in section 5. 
 
 
-## 3. Data used for training summarizer model
-Altohugh the style of writing the headnotes is not the best but it definitely captures important aspects of the judgment. We used the headnotes published along with supreme court judgements from 1950 to 1994. After filtering for minimum lengths there are 10440 supreme court judgements which have headnotes. We split them randomly into 9337 train & 503 test judgments.  We seperated the headnotes from judgment text. The headnotes are  abstractive summaries of judgement text. So we first found out the original judgment sentences from which headnotes were prepared. We used commonly used [heuristic](https://transformersum.readthedocs.io/en/latest/extractive/convert-to-extractive.html) of ROUGE maximization to convert these abstractive summaries to extractive summaries.  Each of these judgements was also passed through our [Rhetorical Roles Prediction model](https://github.com/Legal-NLP-EkStep/rhetorical-role-baseline#6-training-baseline-model-on-train-data) to get predicted rhetorical roles for each of the senteces. So finally in training data for each of the sentences, we have a flag indicating if this sentence is important to be captured in summary and its rhetorical role.
+## 3. [Data](https://storage.googleapis.com/indianlegalbert/OPEN_SOURCED_FILES/judgement_extractive_summarizer/data/data.zip) used for training summarizer [model](https://storage.googleapis.com/indianlegalbert/OPEN_SOURCED_FILES/Extractive_summarization/model/model_headnotes/model.pt)
+Although the style of writing the headnotes is not the best but it definitely captures important aspects of the judgment. We used the headnotes published along with supreme court judgements from 1950 to 1994. After filtering for minimum lengths there are 10440 supreme court judgements which have headnotes. We split them randomly into 9337 train & 503 test judgments.  We seperated the headnotes from judgment text. The headnotes are  abstractive summaries of judgement text. So we first found out the original judgment sentences from which headnotes were prepared. We used commonly used [heuristic](https://transformersum.readthedocs.io/en/latest/extractive/convert-to-extractive.html) of ROUGE maximization to convert these abstractive summaries to extractive summaries.  Each of these judgements was also passed through our [Rhetorical Roles Prediction model](https://github.com/Legal-NLP-EkStep/rhetorical-role-baseline#6-training-baseline-model-on-train-data) to get predicted rhetorical roles for each of the senteces. So finally in training data for each of the sentences, we have a flag indicating if this sentence is important to be captured in summary and its rhetorical role.
 The intuition is that to decide if a sentences should be included in the summary, it is important not only to look at the words of the sentence but also the rhetorical role of that sentence. Certain rhetorical roles are more important than others and we hope that model would learn to capture this. 
 
 ## 4. AI model Architecture (BERTSUM RR)
@@ -47,8 +47,63 @@ We tested the BERTSUM RR model (trained on 9337 judgements) on the 503 test judg
 |  0.6328 |	0.4152 |	0.6219 | 
 
 ## 7. Creating summaries of custom judgments
+### Option 1: Download the processed data. Data has already been processed in .pt files that you can use directly.
 
-## 8. Conclusion & Next Steps
+[Pre-processed data](https://storage.googleapis.com/indianlegalbert/OPEN_SOURCED_FILES/Extractive_summarization/data/data.zip)
+
+unzip the zipfile
+
+### Option 2: process the data yourself
+
+#### Step 1 Download Stories
+
+Download and unzip the `sample json` file
+from [here](https://storage.googleapis.com/indianlegalbert/OPEN_SOURCED_FILES/Extractive_summarization/data/sample.json)
+. This a small set of our train data for reference.
+
+#### Note: Replace with your data
+
+#### Step 2. Format to PyTorch Files
+```
+python preprocess.py -mode format_to_bert -raw_path JSON_PATH -save_path BERT_DATA_PATH -lower -n_cpus 1 -log_file ../logs/preprocess.log max_src_nsents 500000 -min_src_nsents 1 -min_src_ntokens_per_sent 0 -max_src_ntokens_per_sent 512 -min_tgt_ntokens 0 -max_tgt_ntokens 200000 
+```
+
+* `JSON_PATH` is the directory containing json files (`../json_data`), `BERT_DATA_PATH` is the target directory to save the generated binary files (`../bert_data`)
+
+## Model Training
+
+**First run: For the first time, you should use single-GPU, so the code can download the BERT model. Use ``-visible_gpus -1``, after downloading, you could kill the process and rerun the code with multi-GPUs.**
+
+### Extractive Setting
+
+```
+python3 train.py -task ext -mode train -bert_data_path BERT_DATA_PATH -ext_dropout 0.1 -model_path MODEL_PATH -lr 2e-3 -report_every 50 -save_checkpoint_steps 500 -batch_size 5000 -train_steps 5000 -accum_count 2 -log_file ../logs/ext_bert_3jan -use_interval true -warmup_steps 1000 -max_pos 512 -use_rhetorical_roles true
+```
+
+## Model Evaluation
+```
+ python3 train.py -task ext -mode test -test_from /data/bertsum/model.pt -batch_size 5000 -test_batch_size 1 -bert_data_path BERT_DATA_PATH -log_file ../logs/bertsum -model_path MODEL_PATH -sep_optim true -use_interval true -visible_gpus 0 -max_pos 512 -max_length 2000 -alpha 0.95 -min_length 0 -result_path ../logs/ -use_rhetorical_roles true -rogue_exclude_roles_not_in_test true -add_additional_mandatory_roles_to_summary true  -use_adaptive_summary_sent_percent true 
+```
+* `-mode` can be {`validate, test`}, where `validate` will inspect the model directory and evaluate the model for each newly saved checkpoint, `test` need to be used with `-test_from`, indicating the checkpoint you want to use
+* `MODEL_PATH` is the directory of saved checkpoints
+* use `-mode valiadte` with `-test_all`, the system will load all saved checkpoints and select the top ones to generate summaries (this will take a while)
+
+## 8. Running summarizer on sample
+This sample file is generated after passing it through our rhetorical role [repo](https://github.com/Legal-NLP-EkStep/rhetorical-role-baseline). To run the extractive summarizer on any judgement follow the given steps:
+
+
+1. Pass judgement through rhetorical role repo
+2. Use the given code to run extractive [model](https://storage.googleapis.com/indianlegalbert/OPEN_SOURCED_FILES/Extractive_summarization/model/model_headnotes/model.pt)
+
+```python
+from inference import ExtractiveSummarizer
+import json
+summ = ExtractiveSummarizer('./model.pt')
+rr_data = json.load(open('./sample_rhetorical_output.json'))
+summary = summ.infer(rr_data[0])
+```
+
+## 9. Conclusion & Next Steps
 We have trained an extractive summarizer model for Indian Court judgments. We believe that this model will keep on improving with human in the loop feedback. This model in current form can also give decent summaries as shown by the results but needs caution while application.
 
 ## Acknowledgements
