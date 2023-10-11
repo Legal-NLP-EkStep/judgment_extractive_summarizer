@@ -1,3 +1,5 @@
+### Please use this repository if you are interested in training your own extractive summarizer model and understanding details of [Corpus for Automatic Structuring of Legal Documents](http://www.lrec-conf.org/proceedings/lrec2022/pdf/2022.lrec-1.470.pdf). If you want to use pre-trained models on your own data then please use [opennyai library](https://github.com/OpenNyAI/Opennyai).
+
 # Artifical Intelligence augmented Summarization of Indian Court Judgments
 
 ## 1. Why use Artificial Intelligence to help humans create faster summaries of court judgments?
