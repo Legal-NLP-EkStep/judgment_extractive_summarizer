@@ -4,7 +4,7 @@
 
 ## 1. Why use Artificial Intelligence to help humans create faster summaries of court judgments?
 Court judgments can be very long and it is a common practice for legal publishers to create headnotes of judgments. E.g. [sample headnote](https://main.sci.gov.in/judgment/judis/5268.pdf).
-The process of creating headnotes is  manual and based on the certain rules and patterns. With advances in Artifical Intelligence, we can create automatically summaries of long text and then an expert to correct it to create final summary. This will drastically reduce the time needed for creation of headnotes and make the process more consistent. AI model can also learn from the feedback given by the expert and keep on improving the results.
+The process of creating headnotes is  manual and based on the certain rules and patterns. With advances in Artifical Intelligence, we can create automatically summaries of long text and then an expert can correct it to create final summary. This will drastically reduce the time needed for creation of headnotes and make the process more consistent. AI model can also learn from the feedback given by the expert and keep on improving the results.
 
 ## 2. Structure of Judgment Summary
 While standard way of writing headnotes captures the important aspects of the judgement like HELD, experts believe that it is not the best style of writing summaries. E.g. it is difficult to establish if the facts of a new case are similar to facts of an old case by reading headnotes of the old case.
